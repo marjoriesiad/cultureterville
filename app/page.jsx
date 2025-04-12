@@ -6,6 +6,7 @@ export default function Home() {
     <main className="px-4 mt-6">
       <Carousel />
 
+<section>
       <h2 className="mt-10 mb-5 text-center text-xl font-semibold italic">
         Les incontournables
       </h2>
@@ -36,6 +37,7 @@ export default function Home() {
           imageUrl="/images/random.jpg"
         />
       </div>
+      </section>
     </main>
   );
 }
