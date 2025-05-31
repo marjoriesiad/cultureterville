@@ -16,7 +16,7 @@ export default function AdminDashboard() {
     <main className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <AdminCard title="Ventes" value={"125.50"} icon={BarChart} href="/admin/ventes" />
       <AdminCard title="Catégories" value={"3"} icon={Layers} href="/admin/categories" />
-      <AdminCard title="Produits" value={"2"} icon={Package} href="/admin/produits" />
+      <AdminCard title="Produits" value={"2"} icon={Package} href="/admin/products" />
       <AdminCard title="Clients" value={"50"} icon={Users} href="/admin/utilisateurs" />
     </main>
   )
