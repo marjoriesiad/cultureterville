@@ -7,3 +7,14 @@
   --color-gold: #D4AF37; /* Accent, Icônes */
   
 }
+
+.custom-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #7B1E3C;
+  border-radius: 9999px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}

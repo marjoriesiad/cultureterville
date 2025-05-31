@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 function slugify(str) {
-  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "-")
+  return str.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, "-")
 }
 
 async function main() {
@@ -15,15 +15,19 @@ async function main() {
 
   console.log('🍞 Création des catégories...')
   const viennoiseries = await prisma.category.create({
-    data: { name: 'Viennoiseries', slug: 'viennoiseries' }
+    data: { name: 'Viennoiseries', slug: 'viennoiseries' },
   })
 
   const sandwichs = await prisma.category.create({
-    data: { name: 'Sandwichs', slug: 'sandwichs' }
+    data: { name: 'Sandwichs', slug: 'sandwichs' },
   })
 
   const patisseries = await prisma.category.create({
-    data: { name: 'Pâtisseries', slug: 'patisseries' }
+    data: { name: 'Pâtisseries', slug: 'patisseries' },
+  })
+
+  const sandwichChaud = await prisma.category.create({
+    data: { name: 'Sandwich Chaud', slug: 'sandwich-chaud' },
   })
 
   console.log('🥐 Création des produits...')
@@ -42,7 +46,10 @@ async function main() {
     "Opéra", "Tartelette fraise", "Moelleux chocolat", "Tiramisu", "Religieuse"
   ]
 
+  const chaudNames = ["Cheese Américain", "Américain", "Cheese Burger", "Burger"]
+
   const sandwichProducts = []
+  const chaudProducts = []
 
   for (const name of viennoiserieNames) {
     await prisma.product.create({
@@ -87,36 +94,52 @@ async function main() {
     })
   }
 
-  console.log('🧄 Création des sauces et garnitures...')
+  for (const name of chaudNames) {
+    const product = await prisma.product.create({
+      data: {
+        name,
+        slug: slugify(name),
+        image: `/images/${slugify(name)}.jpg`,
+        price: 5 + Math.random() * 2,
+        stock: 25,
+        isCustomizable: true,
+        categoryId: sandwichChaud.id,
+      },
+    })
+    chaudProducts.push(product)
+  }
 
+  console.log('🧄 Création des sauces et garnitures...')
   const sauces = [
-    "Ketchup", "Mayonnaise", "Samouraï", "Barbecue", "Moutarde", "Algérienne", "Curry", "Tartare", "Pesto", "Blanche"
+    "Ketchup", "Mayonnaise", "Samouraï", "Barbecue", "Moutarde",
+    "Algérienne", "Curry", "Tartare", "Pesto", "Blanche"
   ]
 
   const garnitures = [
-    "Olives", "Tomates", "Oignons", "Cornichons", "Salade", "Chèvre", "Poivrons", "Mozzarella", "Aubergines", "Fromage râpé"
+    "Olives", "Tomates", "Oignons", "Cornichons", "Salade",
+    "Chèvre", "Poivrons", "Mozzarella", "Aubergines", "Fromage râpé"
   ]
 
   const createdOptions = []
-
   for (const sauce of sauces) {
     const opt = await prisma.customizationOption.create({
-      data: { name: sauce, type: "SAUCE" }
+      data: { name: sauce, type: "SAUCE" },
     })
     createdOptions.push(opt)
   }
 
   for (const garniture of garnitures) {
     const opt = await prisma.customizationOption.create({
-      data: { name: garniture, type: "GARNITURE" }
+      data: { name: garniture, type: "GARNITURE" },
     })
     createdOptions.push(opt)
   }
 
-  console.log('🔗 Association des options aux sandwichs...')
+  console.log('🔗 Association des options aux sandwichs personnalisables...')
+  const allCustomizable = [...sandwichProducts, ...chaudProducts]
 
   await prisma.productCustomization.createMany({
-    data: sandwichProducts.flatMap(product =>
+    data: allCustomizable.flatMap(product =>
       createdOptions.map(option => ({
         productId: product.id,
         customizationOptionId: option.id,
@@ -124,7 +147,7 @@ async function main() {
     ),
   })
 
-  console.log('✅ Base remplie avec succès !')
+  console.log('✅ Base de données remplie avec succès !')
 }
 
 main()

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { ShoppingCart } from "lucide-react"
+import ProductModal from "@/components/ProductModal"
 
 
 export default function ProductPage() {
@@ -73,7 +74,10 @@ export default function ProductPage() {
       </div>
 
       {/* Modale produit */}
-     
+     <ProductModal
+  product={selectedProduct}
+  onClose={() => setSelectedProduct(null)}
+/>
     </main>
   )
 }
