@@ -1,15 +1,15 @@
-import { PrismaClient } from "@prisma/client";
-import slugify from "slugify";
-import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client"
+import slugify from "slugify"
+import { NextResponse } from "next/server"
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-export async function GET(){
-    const categories = await prisma.category.findMany({
-        orderBy: {name: "asc"},
-    })
+export async function GET() {
+  const categories = await prisma.category.findMany({
+    orderBy: { name: "asc" },
+  })
 
-    return Response.json(categories);
+  return NextResponse.json(categories)
 }
 
 export async function POST(req) {
