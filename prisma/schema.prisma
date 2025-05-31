@@ -6,10 +6,54 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  slug String @unique
+  products Product[]
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id          Int          @id @default(autoincrement())
+  name        String
+  slug        String       @unique
+  image       String
+  description String?
+  price       Float
+  stock       Int
+  isCustomizable Boolean @default(false)
+  categoryId  Int
+  category    Category     @relation(fields: [categoryId], references: [id])
+  customizations ProductCustomization[]
+  createdAt   DateTime     @default(now())
+}
+
+model CustomizationOption {
+  id         Int       @id @default(autoincrement())
+  name       String
+  type       CustomizationType
+  options    ProductCustomization[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model ProductCustomization {
+  id                   Int                  @id @default(autoincrement())
+  product              Product              @relation(fields: [productId], references: [id])
+  productId            Int
+  customizationOption  CustomizationOption  @relation(fields: [customizationOptionId], references: [id])
+  customizationOptionId Int
+}
+
+enum CustomizationType {
+  SAUCE
+  GARNITURE
 }
