@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast, ToastContainer } from "react-toastify"
 import { Eye, EyeOff } from "lucide-react"
+import { signIn } from "next-auth/react"
 import "react-toastify/dist/ReactToastify.css"
 
 export default function RegisterPage() {
@@ -41,7 +42,18 @@ export default function RegisterPage() {
     })
 
     if (res.ok) {
-      toast.success("E-mail de confirmation envoyé")
+      const login = await signIn("credentials", {
+        redirect: false,
+        email: form.email,
+        password: form.password,
+      })
+
+      if (login?.ok) {
+        toast.success("Compte créé")
+        router.push("/products")
+      } else {
+        toast.error("Compte créé, mais connexion échouée")
+      }
     } else {
       const { error } = await res.json()
       toast.error(error || "Erreur serveur")

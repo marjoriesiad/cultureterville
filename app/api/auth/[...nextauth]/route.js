@@ -29,7 +29,7 @@ export const authOptions = {
         })
 
         if (!user || !user.password) throw new Error("Utilisateur introuvable")
-        if (!user.emailVerified) throw new Error("E-mail non vérifié")
+        // if (!user.emailVerified) throw new Error("E-mail non vérifié")
 
         const isValid = await bcrypt.compare(credentials.password, user.password)
         if (!isValid) throw new Error("Mot de passe incorrect")
