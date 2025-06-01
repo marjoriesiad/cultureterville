@@ -174,7 +174,7 @@ toast.error(message)
           </thead>
           <tbody>
             {products.map((p) => (
-              <tr key={p.id} className="border-b hover:bg-gray-50">
+              <tr key={p.id} className="border-b hover:bg-gray-50 text-sm">
                 <td className="px-4 py-3 font-medium">{p.name}</td>
                 <td className="px-4 py-3">{p.price.toFixed(2)} €</td>
                 <td className="px-4 py-3">{p.stock}</td>

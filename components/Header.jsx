@@ -15,7 +15,7 @@ export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
 
   // Simule l'état de connexion et admin
-  const isSignedIn = true;
+  const isSignedIn = false;
   const isAdmin = true;
 
   const toggleMenu = () => setShowMenu((prev) => !prev);
@@ -77,7 +77,7 @@ export default function Header() {
                     Connexion
                   </Link>
                   <Link
-                    href="/inscription"
+                    href="/register"
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Inscription

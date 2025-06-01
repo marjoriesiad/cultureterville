@@ -57,3 +57,14 @@ enum CustomizationType {
   SAUCE
   GARNITURE
 }
+
+model User {
+  id String @id @default(cuid())
+  firstName String
+  lastName String
+  email String @unique
+  emailVerified DateTime?
+  password String? // utilisé seulement pour les inscriptions classiques
+  role String @default("USER") // USER, ADMIN
+  createdAt DateTime @default(now())
+}
